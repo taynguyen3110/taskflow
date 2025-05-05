@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { AuthState, User } from '../types';
+import { AuthState } from '../types';
 import authService from '../api/authService';
 
 interface AuthStore extends AuthState {
@@ -35,18 +35,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
   
   logout: () => {
     authService.logout();
-    set({ isAuthenticated: false, user: null, token: null });
+    set({ isAuthenticated: false, token: null });
   },
   
   initialize: async () => {
-    const { isAuthenticated, user, token } = authService.checkAuth();
+    const { isAuthenticated, token } = authService.checkAuth();
     if (isAuthenticated && token) {
       try {
-        const currentUser = await authService.getCurrentUser();
-        set({ isAuthenticated: true, user: currentUser, token });
+        set({ isAuthenticated: true, token });
       } catch (error) {
         authService.logout();
-        set({ isAuthenticated: false, user: null, token: null });
+        set({ isAuthenticated: false, token: null });
       }
     }
   },

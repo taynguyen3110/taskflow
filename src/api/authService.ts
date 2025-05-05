@@ -14,16 +14,16 @@ interface RegisterData {
 }
 
 interface LoginResponse {
-  token: string;
-  user: User;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const authService = {
   async login(data: LoginData): Promise<AuthState> {
     const response = await api.post<LoginResponse>('/auth/login', data);
-    const { token, user } = response.data;
+    const  token = response.data.accessToken;
     localStorage.setItem('token', token);
-    return { isAuthenticated: true, user, token };
+    return { isAuthenticated: true, token };
   },
 
   async register(data: RegisterData): Promise<void> {
@@ -42,20 +42,13 @@ export const authService = {
   checkAuth(): AuthState {
     const token = localStorage.getItem('token');
     if (!token) {
-      return { isAuthenticated: false, user: null, token: null };
+      return { isAuthenticated: false, token: null };
     }
     try {
-      // Parse the JWT to get user information
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const user = {
-        id: payload.sub,
-        username: payload.name,
-        email: payload.email,
-      };
-      return { isAuthenticated: true, user, token };
+      return { isAuthenticated: true, token };
     } catch (error) {
       localStorage.removeItem('token');
-      return { isAuthenticated: false, user: null, token: null };
+      return { isAuthenticated: false, token: null };
     }
   },
 };

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL should be updated to match your ASP.NET Core backend URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:5001/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:7234/api';
 
 const api = axios.create({
   baseURL: API_URL,

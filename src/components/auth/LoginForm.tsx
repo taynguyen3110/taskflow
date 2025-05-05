@@ -85,7 +85,7 @@ const LoginForm: React.FC = () => {
           })}
         />
 
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <div className="text-sm">
             <Link
               to="/forgot-password"
@@ -94,7 +94,7 @@ const LoginForm: React.FC = () => {
               Forgot your password?
             </Link>
           </div>
-        </div>
+        </div> */}
 
         <Button
           type="submit"
